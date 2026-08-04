@@ -9,5 +9,8 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
     List<Expense> findByUser(User user);
+    Long countByUser(User user);
 
+    List<Expense> findByUserOrderByAmountDesc(User user);
+    List<Expense> findByUserOrderByCategory(User user);
 }

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 
 
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -40,6 +41,12 @@ public class User {
     @Column(name = "email_verified")
     private Boolean emailVerified = false;
 
+    @Column(name = "otp")
+    private String otp;
+
+    @Column(name = "otp_expiry")
+    private LocalDateTime otpExpiry;
+
     @Column(name = "created_at", updatable = false)
 
     private java.time.LocalDateTime createdAt;
@@ -50,7 +57,21 @@ public class User {
     public Integer getId() {
         return id;
     }
+    public String getOtp() {
+        return otp;
+    }
 
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
+    }
     public void setId(Integer id) {
         this.id = id;
     }

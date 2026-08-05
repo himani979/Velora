@@ -3,6 +3,7 @@ package com.velora.backend.controller;
 import com.velora.backend.dto.MonthlySummaryResponse;
 import com.velora.backend.dto.CategorySummaryResponse;
 import java.util.List;
+import com.velora.backend.dto.SavingsSummaryResponse;
 import com.velora.backend.dto.DashboardSummaryResponse;
 import com.velora.backend.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class DashboardController {
     @GetMapping("/monthly")
     public List<MonthlySummaryResponse> getMonthlySummary() {
         return dashboardService.getMonthlySummary();
+    }
+    @GetMapping("/savings")
+    public SavingsSummaryResponse getSavingsSummary() {
+        return dashboardService.getSavingsSummary();
     }
 }

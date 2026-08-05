@@ -1,5 +1,10 @@
 package com.velora.backend.service;
 
+import com.velora.backend.dto.SavingsSummaryResponse;
+import com.velora.backend.repository.IncomeRepository;
+import com.velora.backend.repository.BudgetRepository;
+import com.velora.backend.entity.Income;
+import com.velora.backend.entity.Budget;
 import com.velora.backend.dto.MonthlySummaryResponse;
 import java.time.Month;
 import com.velora.backend.dto.CategorySummaryResponse;
@@ -107,6 +112,12 @@ public class DashboardService {
 
         return response;
     }
+    @Autowired
+    private IncomeRepository incomeRepository;
+
+    @Autowired
+    private BudgetRepository budgetRepository;
+
     public List<MonthlySummaryResponse> getMonthlySummary() {
 
         // Logged-in user
@@ -150,5 +161,71 @@ public class DashboardService {
         }
 
         return response;
+    }
+    public SavingsSummaryResponse getSavingsSummary() {
+
+        // Logged-in user
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        if (user == null) {
+            return new SavingsSummaryResponse(
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    "No Budget"
+            );
+        }
+
+        // Total Income
+        List<Income> incomes = incomeRepository.findByUser(user);
+
+        double totalIncome = incomes.stream()
+                .mapToDouble(Income::getAmount)
+                .sum();
+
+        // Total Expense
+        List<Expense> expenses = expenseRepository.findByUser(user);
+
+        double totalExpense = expenses.stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
+
+        // Total Budget
+        List<Budget> budgets = budgetRepository.findByUser(user);
+
+        double totalBudget = budgets.stream()
+                .mapToDouble(Budget::getAmount)
+                .sum();
+
+        // Savings
+        double savings = totalIncome - totalExpense;
+
+        // Remaining Budget
+        double remainingBudget = totalBudget - totalExpense;
+        double budgetUsagePercentage = 0.0;
+
+        if (totalBudget > 0) {
+            budgetUsagePercentage = (totalExpense / totalBudget) * 100;
+        }
+
+        String budgetStatus = remainingBudget >= 0
+                ? "Within Budget"
+                : "Budget Exceeded";
+        return new SavingsSummaryResponse(
+                totalIncome,
+                totalExpense,
+                totalBudget,
+                savings,
+                remainingBudget,
+                budgetUsagePercentage,
+                budgetStatus
+        );
     }
     }

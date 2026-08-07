@@ -1,26 +1,41 @@
 package com.velora.backend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-//@AllArgsConstructor
 public class DashboardSummaryResponse {
 
-    private Double totalExpense;
-
-    private Long totalTransactions;
-
+    private Long totalExpenses;
+    private Double totalAmount;
     private Double highestExpense;
-    public DashboardSummaryResponse(Double totalExpense,
-                                    Long totalTransactions,
-                                    Double highestExpense) {
-        this.totalExpense = totalExpense;
-        this.totalTransactions = totalTransactions;
+
+    public DashboardSummaryResponse() {
+    }
+
+    public DashboardSummaryResponse(Long totalExpenses, Double totalAmount, Double highestExpense) {
+        this.totalExpenses = totalExpenses;
+        this.totalAmount = totalAmount;
+        this.highestExpense = highestExpense;
+    }
+
+    public Long getTotalExpenses() {
+        return totalExpenses;
+    }
+
+    public void setTotalExpenses(Long totalExpenses) {
+        this.totalExpenses = totalExpenses;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Double getHighestExpense() {
+        return highestExpense;
+    }
+
+    public void setHighestExpense(Double highestExpense) {
         this.highestExpense = highestExpense;
     }
 }

@@ -107,4 +107,11 @@ public class Expense {
     public void onCreate() {
         createdAt = LocalDateTime.now();
     }
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

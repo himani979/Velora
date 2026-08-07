@@ -16,10 +16,7 @@ public class DashboardController {
     @Autowired
     private DashboardService dashboardService;
 
-    @GetMapping("/summary")
-    public DashboardSummaryResponse getSummary() {
-        return dashboardService.getSummary();
-    }
+
     @GetMapping("/category")
     public List<CategorySummaryResponse> getCategorySummary() {
         return dashboardService.getCategorySummary();
@@ -31,5 +28,9 @@ public class DashboardController {
     @GetMapping("/savings")
     public SavingsSummaryResponse getSavingsSummary() {
         return dashboardService.getSavingsSummary();
+    }
+    @GetMapping("/summary")
+    public DashboardSummaryResponse getSummary() {
+        return dashboardService.getSummary();
     }
 }

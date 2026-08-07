@@ -17,7 +17,7 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        System.out.println("******** SECURITY CONFIG LOADED ********");
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
@@ -25,8 +25,10 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/users/login",
+                                "/api/users",
                                 "/api/users/register",
+
+                                "/api/users/login",
                                 "/api/users/forgot-password",
                                 "/api/users/verify-otp",
                                 "/api/users/reset-password"
@@ -41,4 +43,5 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

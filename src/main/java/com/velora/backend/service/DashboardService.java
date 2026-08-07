@@ -42,7 +42,11 @@ public class DashboardService {
         User user = userRepository.findByEmail(email).orElse(null);
 
         if (user == null) {
-            return new DashboardSummaryResponse(0.0, 0L, 0.0);
+            return new DashboardSummaryResponse(
+                    0L,
+                    0.0,
+                    0.0
+            );
         }
 
         // Get all expenses of the user
@@ -63,8 +67,8 @@ public class DashboardService {
                 .orElse(0.0);
 
         return new DashboardSummaryResponse(
-                totalExpense,
                 totalTransactions,
+                totalExpense,
                 highestExpense
         );
     }

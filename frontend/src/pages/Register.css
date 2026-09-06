@@ -1,0 +1,228 @@
+* {
+    box-sizing: border-box;
+}
+
+.register-page {
+    min-height: 100vh;
+    background: var(--velora-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: Inter, Arial, sans-serif;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 1050px;
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--velora-white);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(31, 77, 58, 0.14);
+}
+
+
+/* LEFT SIDE */
+
+.register-brand {
+    background: var(--velora-green);
+    color: var(--velora-white);
+    padding: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.register-brand h1 {
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    margin: 0 0 14px;
+    color: var(--velora-white);
+    font-weight: 800;
+}
+
+.register-tagline {
+    font-size: 21px;
+    color: var(--velora-white);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+.register-description {
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 0 30px;
+    font-size: 15px;
+}
+
+.register-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.register-feature span {
+    width: 23px;
+    height: 23px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--velora-accent);
+    color: var(--velora-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.register-feature p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+
+/* RIGHT SIDE */
+
+.register-card {
+    padding: 55px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--velora-white);
+}
+
+.register-header {
+    margin-bottom: 28px;
+}
+
+.register-header h2 {
+    margin: 0 0 9px;
+    font-size: 31px;
+    color: var(--velora-text);
+    letter-spacing: -0.7px;
+}
+
+.register-header p {
+    margin: 0;
+    color: var(--velora-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* FORM */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--velora-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #D8DED9;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 14px;
+    outline: none;
+    background: #FCFCF9;
+    color: var(--velora-text);
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--velora-accent);
+    background: var(--velora-white);
+    box-shadow: 0 0 0 4px rgba(46, 125, 90, 0.12);
+}
+
+.form-group input::placeholder {
+    color: #9A9F9B;
+}
+
+
+/* BUTTON */
+
+.register-button {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: var(--velora-accent);
+    color: var(--velora-white);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 5px;
+}
+
+.register-button:hover {
+    background: var(--velora-green);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(31, 77, 58, 0.20);
+}
+
+
+/* LOGIN LINK */
+
+.login-link {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 25px;
+    font-size: 13px;
+    color: var(--velora-muted);
+}
+
+.login-link a {
+    color: var(--velora-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+    .register-container {
+        grid-template-columns: 1fr;
+    }
+    .register-brand {
+        padding: 40px;
+    }
+    .register-card {
+        padding: 45px 35px;
+    }
+}
+
+@media (max-width: 500px) {
+    .register-page {
+        padding: 15px;
+    }
+    .register-brand {
+        padding: 35px 25px;
+    }
+    .register-card {
+        padding: 35px 25px;
+    }
+}

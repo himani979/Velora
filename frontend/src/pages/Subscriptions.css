@@ -1,0 +1,693 @@
+/* =========================================================
+   VELORA SUBSCRIPTIONS PAGE
+   ========================================================= */
+
+.subscriptions-layout {
+    min-height: 100vh;
+    background: #f7f4ec;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.subscriptions-main {
+    margin-left: 225px;
+    padding: 42px 42px 70px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.subscriptions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.subscriptions-eyebrow,
+.panel-label {
+    margin: 0 0 7px;
+    color: #12634d;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.subscriptions-header h1 {
+    margin: 0;
+    color: #092f24;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 38px;
+    line-height: 1.15;
+}
+
+.subscriptions-subtitle {
+    margin: 9px 0 0;
+    color: #66685f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+   ========================================================= */
+
+.add-subscription-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 22px;
+    background: #155c46;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.add-subscription-btn:hover {
+    background: #0e4937;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+   ========================================================= */
+
+.subscription-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.subscription-summary-card {
+    min-height: 106px;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    background: #ffffff;
+    border: 1px solid #e3ded3;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e7f0eb;
+    color: #155c46;
+    font-size: 24px;
+}
+
+.subscription-summary-card span {
+    display: block;
+    color: #6d7069;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.subscription-summary-card strong {
+    display: block;
+    color: #092f24;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.subscription-error {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border: 1px solid #e7b7b7;
+    border-radius: 9px;
+    background: #fff2f2;
+    color: #a12f2f;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+   ========================================================= */
+
+.subscriptions-panel,
+.subscription-reminders,
+.subscription-editor {
+    background: #ffffff;
+    border: 1px solid #e3ded3;
+    border-radius: 15px;
+    padding: 25px 25px 27px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.subscriptions-panel-header,
+.editor-header {
+    margin-bottom: 21px;
+}
+
+.subscriptions-panel-header h2,
+.editor-header h2 {
+    margin: 0;
+    color: #102f26;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+}
+
+
+/* =========================================================
+   SUBSCRIPTION LIST
+   ========================================================= */
+
+.subscription-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.subscription-item {
+    min-height: 95px;
+    display: grid;
+    grid-template-columns: 62px minmax(200px, 1fr) 90px 270px;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #ece8df;
+}
+
+.subscription-item:last-child {
+    border-bottom: none;
+    padding-bottom: 5px;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.subscription-icon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #e7f0eb;
+    color: #176149;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INFO
+   ========================================================= */
+
+.subscription-info h3 {
+    margin: 0 0 5px;
+    color: #142d25;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+}
+
+.subscription-info p {
+    margin: 0 0 5px;
+    color: #63675f;
+    font-size: 13px;
+}
+
+.subscription-info small {
+    color: #6d7069;
+    font-size: 12px;
+}
+
+.status-active {
+    color: #197052;
+    font-weight: 600;
+}
+
+.status-other {
+    color: #98723d;
+    font-weight: 600;
+}
+
+.dot {
+    margin: 0 4px;
+    color: #aaa;
+}
+
+
+/* =========================================================
+   PRICE
+   ========================================================= */
+
+.subscription-price {
+    text-align: right;
+}
+
+.subscription-price strong {
+    display: block;
+    color: #12634d;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+}
+
+.subscription-price span {
+    display: block;
+    margin-top: 4px;
+    color: #777970;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.subscription-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.subscription-actions button {
+    height: 37px;
+    padding: 0 14px;
+    border-radius: 7px;
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.edit-btn {
+    border: 1px solid #d4d7d2;
+    color: #303832;
+}
+
+.edit-btn:hover {
+    background: #f3f6f3;
+}
+
+.autopay-btn {
+    border: 1px solid #d4d7d2;
+    color: #303832;
+}
+
+.autopay-btn:hover {
+    background: #f3f6f3;
+}
+
+.subscription-delete-btn {
+    border: 1px solid #d4d7d2;
+    color: #303832;
+}
+
+.subscription-delete-btn:hover {
+    background: #f3f6f3;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.subscription-empty {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.subscription-empty h3 {
+    margin: 0 0 7px;
+    color: #17372d;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+}
+
+.subscription-empty p {
+    margin: 0;
+    color: #777970;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   REMINDERS
+   ========================================================= */
+
+.reminder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reminder-card {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 13px;
+    padding: 14px 16px;
+    border: 1px solid #ece8df;
+    border-radius: 10px;
+    background: #fcfbf8;
+}
+
+.reminder-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f8eee0;
+    color: #a46d2c;
+    font-weight: 700;
+}
+
+.reminder-info h3 {
+    margin: 0 0 3px;
+    color: #23362f;
+    font-size: 14px;
+}
+
+.reminder-info p {
+    margin: 0;
+    color: #777970;
+    font-size: 12px;
+}
+
+.reminder-card>strong {
+    color: #12634d;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   EDITOR
+   ========================================================= */
+
+.subscription-editor {
+    padding: 25px;
+}
+
+.editor-header {
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.subscription-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 28px;
+    row-gap: 22px;
+    padding: 18px 15px 10px;
+    border: 1px solid #e8e4dc;
+    border-radius: 10px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    margin-bottom: 8px;
+    color: #37413b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid #d8dbd6;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #26322d;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #31775f;
+    box-shadow: 0 0 0 3px rgba(49, 119, 95, 0.09);
+}
+
+
+/* =========================================================
+   AUTOPAY
+   ========================================================= */
+
+.autopay-field {
+    display: flex;
+    align-items: center;
+    padding-top: 21px;
+}
+
+.autopay-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.autopay-check input {
+    width: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: #176149;
+    cursor: pointer;
+}
+
+.autopay-check span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.autopay-check strong {
+    color: #26352e;
+    font-size: 13px;
+}
+
+.autopay-check small {
+    color: #7a7d76;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.subscription-form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 19px;
+    border-top: 1px solid #ece8df;
+}
+
+.cancel-editor-btn,
+.save-subscription-btn {
+    height: 40px;
+    padding: 0 22px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-editor-btn {
+    border: 1px solid #d5d8d4;
+    background: white;
+    color: #303832;
+}
+
+.cancel-editor-btn:hover {
+    background: #f6f7f5;
+}
+
+.save-subscription-btn {
+    min-width: 205px;
+    border: none;
+    background: #155c46;
+    color: white;
+}
+
+.save-subscription-btn:hover {
+    background: #0e4937;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .subscriptions-main {
+        margin-left: 225px;
+        padding: 30px;
+    }
+    .subscription-item {
+        grid-template-columns: 55px minmax(180px, 1fr) 90px;
+    }
+    .subscription-actions {
+        grid-column: 2 / -1;
+        justify-content: flex-start;
+    }
+    .subscription-price {
+        text-align: left;
+    }
+    .subscription-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .subscriptions-main {
+        margin-left: 0;
+        padding: 25px 18px 50px;
+    }
+    .subscriptions-header {
+        flex-direction: column;
+    }
+    .subscription-summary {
+        grid-template-columns: 1fr;
+    }
+    .subscription-item {
+        grid-template-columns: 54px 1fr;
+        gap: 14px;
+    }
+    .subscription-price {
+        grid-column: 2;
+    }
+    .subscription-actions {
+        grid-column: 2;
+    }
+    .subscription-form {
+        grid-template-columns: 1fr;
+    }
+    .subscription-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .save-subscription-btn,
+    .cancel-editor-btn {
+        width: 100%;
+    }
+}
+
+
+/* =========================================
+   DARK MODE - SUBSCRIPTIONS
+========================================= */
+
+[data-theme="dark"] .subscriptions-layout,
+[data-theme="dark"] .subscriptions-main {
+    background: var(--velora-bg);
+    color: var(--velora-text);
+}
+
+[data-theme="dark"] .subscription-summary-card,
+[data-theme="dark"] .subscriptions-panel,
+[data-theme="dark"] .subscription-reminders,
+[data-theme="dark"] .subscription-editor {
+    background: var(--velora-white);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .subscriptions-header h1,
+[data-theme="dark"] .subscriptions-panel h2,
+[data-theme="dark"] .subscription-editor h2,
+[data-theme="dark"] .subscription-info h3,
+[data-theme="dark"] .subscription-summary-card strong,
+[data-theme="dark"] .subscription-price strong,
+[data-theme="dark"] .form-field label,
+[data-theme="dark"] .autopay-check strong {
+    color: var(--velora-text);
+}
+
+[data-theme="dark"] .subscriptions-subtitle,
+[data-theme="dark"] .subscription-summary-card span,
+[data-theme="dark"] .subscription-info p,
+[data-theme="dark"] .subscription-info small,
+[data-theme="dark"] .subscription-price span,
+[data-theme="dark"] .autopay-check small,
+[data-theme="dark"] .subscription-empty p {
+    color: var(--velora-muted);
+}
+
+[data-theme="dark"] .subscription-item {
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .subscription-icon,
+[data-theme="dark"] .summary-icon {
+    background: #223129;
+    color: var(--velora-accent);
+}
+
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .form-field select {
+    background: #202c26;
+    color: var(--velora-text);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .subscription-actions button,
+F[data-theme="dark"] .cancel-editor-btn {
+    background: #202c26;
+    color: var(--velora-text);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .subscription-form {
+    background: var(--velora-white);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .reminder-card {
+    background: #202c26;
+    border-color: var(--velora-border);
+}

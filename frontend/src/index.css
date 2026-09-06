@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --velora-green: #1F4D3A;
+    --velora-bg: #F6F2E9;
+    --velora-white: #FFFFFF;
+    --velora-text: #1A1A1A;
+    --velora-muted: #6B6B6B;
+    --velora-accent: #2E7D5A;
+    --velora-danger: #D9534F;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: var(--velora-bg);
+    color: var(--velora-text);
+}/* =========================================
+   VELORA LIGHT THEME
+========================================= */
+
+:root {
+    --velora-bg: #f7f4ec;
+    --velora-white: #ffffff;
+    --velora-green: #1f5944;
+    --velora-accent: #17704f;
+    --velora-text: #1d2923;
+    --velora-muted: #718078;
+    --velora-border: #e7e1d5;
+}
+
+
+/* =========================================
+   VELORA DARK THEME
+========================================= */
+
+[data-theme="dark"] {
+    --velora-bg: #101713;
+    --velora-white: #18231e;
+    --velora-green: #8fd3b2;
+    --velora-accent: #70c59d;
+    --velora-text: #edf5f0;
+    --velora-muted: #a8b8af;
+    --velora-border: #304039;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+    background: var(--velora-bg);
+    color: var(--velora-text);
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+}

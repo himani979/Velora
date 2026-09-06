@@ -1,0 +1,260 @@
+* {
+    box-sizing: border-box;
+}
+
+.login-page {
+    min-height: 100vh;
+    background: var(--velora-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: Inter, Arial, sans-serif;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1050px;
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--velora-white);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(31, 77, 58, 0.14);
+}
+
+
+/* Left side */
+
+.login-brand {
+    background: var(--velora-green);
+    color: var(--velora-white);
+    padding: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.login-brand h1 {
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    margin: 0 0 14px;
+    color: var(--velora-white);
+    font-weight: 800;
+}
+
+.brand-tagline {
+    font-size: 21px;
+    color: var(--velora-white);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+.brand-description {
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 0 30px;
+    font-size: 15px;
+}
+
+.brand-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.brand-feature span {
+    width: 23px;
+    height: 23px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--velora-accent);
+    color: var(--velora-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.brand-feature p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+
+/* Right side */
+
+.login-card {
+    padding: 65px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--velora-white);
+}
+
+.login-header {
+    margin-bottom: 35px;
+}
+
+.login-header h2 {
+    margin: 0 0 9px;
+    font-size: 31px;
+    color: var(--velora-text);
+    letter-spacing: -0.7px;
+}
+
+.login-header p {
+    margin: 0;
+    color: var(--velora-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--velora-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #D8DED9;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 14px;
+    outline: none;
+    background: #FCFCF9;
+    color: var(--velora-text);
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--velora-accent);
+    background: var(--velora-white);
+    box-shadow: 0 0 0 4px rgba(46, 125, 90, 0.12);
+}
+
+.form-group input::placeholder {
+    color: #9A9F9B;
+}
+
+.password-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.password-label label {
+    margin-bottom: 8px;
+}
+
+.password-label a {
+    color: var(--velora-accent);
+    font-size: 13px;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.password-label a:hover {
+    text-decoration: underline;
+}
+
+.login-button {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: var(--velora-accent);
+    color: var(--velora-white);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 5px;
+}
+
+.login-button:hover {
+    background: var(--velora-green);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(31, 77, 58, 0.20);
+}
+
+.login-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.login-error {
+    color: var(--velora-danger);
+    font-size: 13px;
+    margin: -5px 0 12px;
+}
+
+.register-link {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 30px;
+    font-size: 13px;
+    color: var(--velora-muted);
+}
+
+.register-link a {
+    color: var(--velora-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* Responsive */
+
+@media (max-width: 800px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+    .login-brand {
+        padding: 40px;
+    }
+    .login-brand h1 {
+        font-size: 38px;
+    }
+    .login-card {
+        padding: 45px 35px;
+    }
+}
+
+@media (max-width: 500px) {
+    .login-page {
+        padding: 15px;
+    }
+    .login-brand {
+        padding: 35px 25px;
+    }
+    .login-card {
+        padding: 35px 25px;
+    }
+}
+
+.back-login-button {
+    margin-top: 14px;
+}

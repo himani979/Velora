@@ -1,0 +1,547 @@
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.income-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f7f8fa;
+}
+
+.income-main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 40px 48px;
+    min-width: 0;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.income-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    gap: 24px;
+}
+
+.income-eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #8b8f98;
+}
+
+.income-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #17191c;
+}
+
+.income-subtitle {
+    margin: 8px 0 0;
+    color: #777c85;
+    font-size: 15px;
+}
+
+
+/* =========================
+   ADD INCOME BUTTON
+========================= */
+
+.add-income-button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    background: #17191c;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.add-income-button:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================
+   SUMMARY CARDS
+========================= */
+
+.income-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.income-summary-card {
+    background: white;
+    border: 1px solid #e8e9ec;
+    border-radius: 14px;
+    padding: 24px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.income-summary-card p {
+    margin: 0 0 12px;
+    color: #777c85;
+    font-size: 14px;
+}
+
+.income-summary-card h2 {
+    margin: 0;
+    color: #17191c;
+    font-size: 26px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.income-summary-card span {
+    display: block;
+    margin-top: 8px;
+    color: #8b8f98;
+    font-size: 13px;
+}
+
+
+/* =========================
+   MAIN PANEL
+========================= */
+
+.income-panel {
+    background: white;
+    border: 1px solid #e8e9ec;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.income-panel-header {
+    padding: 24px;
+    border-bottom: 1px solid #eeeeef;
+}
+
+.panel-label {
+    margin: 0 0 6px;
+    color: #92959d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.income-panel-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #17191c;
+}
+
+
+/* =========================
+   INCOME LIST
+========================= */
+
+.income-list {
+    width: 100%;
+}
+
+.income-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #eeeeef;
+    box-sizing: border-box;
+}
+
+.income-row:last-child {
+    border-bottom: none;
+}
+
+
+/* =========================
+   ICON
+========================= */
+
+.income-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f1f7f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.income-details {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.income-details strong {
+    font-size: 15px;
+    color: #202226;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.income-details span {
+    color: #8a8e96;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   AMOUNT
+========================= */
+
+.income-amount {
+    color: #168044;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.income-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.income-edit-button,
+.income-delete-button {
+    border: 1px solid #e1e2e5;
+    background: white;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.income-edit-button {
+    color: #33363b;
+}
+
+.income-delete-button {
+    color: #c43d3d;
+}
+
+.income-edit-button:hover {
+    background: #f5f5f6;
+}
+
+.income-delete-button:hover {
+    background: #fff3f3;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-income {
+    text-align: center;
+    padding: 70px 20px;
+    color: #777c85;
+}
+
+.empty-income-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.empty-income h3 {
+    margin: 0 0 8px;
+    color: #202226;
+    font-size: 18px;
+}
+
+.empty-income p {
+    margin: 0 auto 20px;
+    max-width: 400px;
+    font-size: 14px;
+}
+
+.empty-add-income {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 16px;
+    background: #17191c;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+/* =========================
+   MODAL OVERLAY
+========================= */
+
+.income-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.income-modal {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.income-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 26px;
+}
+
+.income-modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #17191c;
+}
+
+.modal-close {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #777c85;
+    cursor: pointer;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.modal-form-group {
+    margin-bottom: 18px;
+}
+
+.modal-form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #34373c;
+}
+
+.modal-form-group input,
+.modal-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #dfe1e5;
+    border-radius: 9px;
+    padding: 11px 12px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.modal-form-group input:focus,
+.modal-form-group textarea:focus {
+    border-color: #17191c;
+}
+
+.modal-form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+
+/* =========================
+   AMOUNT INPUT
+========================= */
+
+.amount-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dfe1e5;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.amount-input span {
+    padding-left: 12px;
+    color: #777c85;
+    font-size: 14px;
+}
+
+.amount-input input {
+    border: none;
+    border-radius: 0;
+}
+
+
+/* =========================
+   MODAL ACTIONS
+========================= */
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 26px;
+}
+
+.cancel-button,
+.save-income-button {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background: #f0f1f3;
+    color: #34373c;
+}
+
+.save-income-button {
+    background: #17191c;
+    color: white;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+    .income-main {
+        margin-left: 220px;
+        padding: 32px;
+    }
+    .income-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .income-row {
+        grid-template-columns: 44px minmax(0, 1fr) auto;
+    }
+    .income-row-actions {
+        grid-column: 2 / -1;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 700px) {
+    .income-main {
+        margin-left: 0;
+        padding: 24px 18px;
+    }
+    .income-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .add-income-button {
+        width: 100%;
+    }
+    .income-summary {
+        grid-template-columns: 1fr;
+    }
+    .income-row {
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 12px;
+    }
+    .income-amount {
+        grid-column: 2;
+    }
+    .income-row-actions {
+        grid-column: 2;
+    }
+}/* =========================================
+   DARK MODE - INCOME
+========================================= */
+
+[data-theme="dark"] .income-layout,
+[data-theme="dark"] .income-main {
+    background: var(--velora-bg);
+    color: var(--velora-text);
+}
+
+[data-theme="dark"] .income-summary-card,
+[data-theme="dark"] .income-panel,
+[data-theme="dark"] .income-modal {
+    background: var(--velora-white);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .income-header h1,
+[data-theme="dark"] .income-summary-card h2,
+[data-theme="dark"] .income-panel h2,
+[data-theme="dark"] .income-panel h3,
+[data-theme="dark"] .income-details strong,
+[data-theme="dark"] .income-modal h2,
+[data-theme="dark"] .income-modal label {
+    color: var(--velora-text);
+}
+
+[data-theme="dark"] .income-subtitle,
+[data-theme="dark"] .income-summary-card p,
+[data-theme="dark"] .income-summary-card span,
+[data-theme="dark"] .income-details span,
+[data-theme="dark"] .empty-income,
+[data-theme="dark"] .income-modal p {
+    color: var(--velora-muted);
+}
+
+[data-theme="dark"] .income-search,
+[data-theme="dark"] .income-filter,
+[data-theme="dark"] .income-modal input,
+[data-theme="dark"] .income-modal select,
+[data-theme="dark"] .income-modal textarea {
+    background: #202c26;
+    color: var(--velora-text);
+    border-color: var(--velora-border);
+}
+
+[data-theme="dark"] .income-row {
+    border-color: var(--velora-border);
+}

@@ -45,6 +45,9 @@ public class User {
     @Column(name = "profile_image")
     private String profileImage;
 
+    @Column(name = "income")
+    private Double income = 0.0;
+
     @Column(name = "email_verified")
     private Boolean emailVerified = false;
 
@@ -53,6 +56,12 @@ public class User {
 
     @Column(name = "otp_expiry")
     private LocalDateTime otpExpiry;
+
+    @Column(name = "otp_purpose")
+    private String otpPurpose;
+
+    @Column(name = "reset_otp_verified")
+    private Boolean resetOtpVerified = false;
 
     @Column(name = "created_at", updatable = false)
 
@@ -118,7 +127,28 @@ public class User {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+    public Double getIncome() {
+        return income;
+    }
 
+    public void setIncome(Double income) {
+        this.income = income;
+    }
+    public String getOtpPurpose() {
+        return otpPurpose;
+    }
+
+    public void setOtpPurpose(String otpPurpose) {
+        this.otpPurpose = otpPurpose;
+    }
+
+    public Boolean getResetOtpVerified() {
+        return resetOtpVerified;
+    }
+
+    public void setResetOtpVerified(Boolean resetOtpVerified) {
+        this.resetOtpVerified = resetOtpVerified;
+    }
     public Boolean getEmailVerified() {
         return emailVerified;
     }

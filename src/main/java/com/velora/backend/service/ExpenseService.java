@@ -9,7 +9,7 @@ import com.velora.backend.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-
+import com.velora.backend.dto.CategorySummaryResponse;
 import java.util.List;
 
 @Service
@@ -25,15 +25,16 @@ public class ExpenseService {
 
     public List<Expense> getAllExpenses() {
 
-        // Get logged-in user's email from JWT
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
-        // Find user by email
         User user = userRepository.findByEmail(email).orElse(null);
 
-        // Return only this user's expenses
+        if (user == null) {
+            return List.of();
+        }
+
         return expenseRepository.findByUser(user);
     }
 
@@ -48,6 +49,10 @@ public class ExpenseService {
 
         User user = userRepository.findByEmail(email).orElse(null);
 
+        if (user == null) {
+            return null;
+        }
+
         Expense expense = new Expense();
 
         expense.setTitle(request.getTitle());
@@ -55,7 +60,6 @@ public class ExpenseService {
         expense.setCategory(request.getCategory());
         expense.setExpenseDate(request.getExpenseDate());
         expense.setNote(request.getNote());
-
         expense.setUser(user);
 
         return expenseRepository.save(expense);
@@ -125,7 +129,7 @@ public class ExpenseService {
 
         return "Expense deleted successfully";
     }
-    public List<Object[]> getCategorySummary() {
+    public List<CategorySummaryResponse> getCategorySummary() {
 
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -137,7 +141,14 @@ public class ExpenseService {
             return List.of();
         }
 
-        return expenseRepository.getCategorySummary(user);
+        List<Object[]> results = expenseRepository.getCategorySummary(user);
+
+        return results.stream()
+                .map(result -> new CategorySummaryResponse(
+                        (String) result[0],
+                        ((Number) result[1]).doubleValue()
+                ))
+                .toList();
     }
     public Expense getExpenseById(Integer id) {
 

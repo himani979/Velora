@@ -1,34 +1,38 @@
 package com.velora.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-
 import java.time.LocalDate;
 
-public class IncomeRequest {
+public class IncomeResponse {
 
-    @NotBlank(message = "Income source is required")
+    private Integer id;
     private String source;
-
-    @NotNull(message = "Amount is required")
-    @Positive(message = "Amount must be greater than 0")
     private Double amount;
-
-    @NotNull(message = "Income date is required")
     private LocalDate incomeDate;
-
     private String note;
 
-    public IncomeRequest() {
+    public IncomeResponse() {
     }
 
-    public IncomeRequest(String source, Double amount,
-                         LocalDate incomeDate, String note) {
+    public IncomeResponse(
+            Integer id,
+            String source,
+            Double amount,
+            LocalDate incomeDate,
+            String note) {
+
+        this.id = id;
         this.source = source;
         this.amount = amount;
         this.incomeDate = incomeDate;
         this.note = note;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSource() {

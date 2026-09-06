@@ -34,6 +34,7 @@ public class JwtService {
     public boolean isTokenValid(String token) {
 
         try {
+
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
@@ -42,6 +43,12 @@ public class JwtService {
             return true;
 
         } catch (Exception e) {
+
+            System.out.println("========== JWT ERROR ==========");
+            System.out.println("JWT Error: " + e.getClass().getName());
+            System.out.println("JWT Message: " + e.getMessage());
+            System.out.println("==============================");
+
             return false;
         }
     }

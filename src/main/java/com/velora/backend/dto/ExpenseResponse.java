@@ -1,38 +1,41 @@
 package com.velora.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-
 import java.time.LocalDate;
 
-public class ExpenseRequest {
+public class ExpenseResponse {
 
-    @NotBlank(message = "Title is required")
+    private Integer id;
     private String title;
-
-    @NotNull(message = "Amount is required")
-    @Positive(message = "Amount must be greater than 0")
     private Double amount;
-
-    @NotBlank(message = "Category is required")
     private String category;
-
-    @NotNull(message = "Expense date is required")
     private LocalDate expenseDate;
-
     private String note;
 
-    public ExpenseRequest() {
+    public ExpenseResponse() {
     }
 
-    public ExpenseRequest(String title, Double amount, String category,
-                          LocalDate expenseDate, String note) {
+    public ExpenseResponse(
+            Integer id,
+            String title,
+            Double amount,
+            String category,
+            LocalDate expenseDate,
+            String note) {
+
+        this.id = id;
         this.title = title;
         this.amount = amount;
         this.category = category;
         this.expenseDate = expenseDate;
         this.note = note;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {

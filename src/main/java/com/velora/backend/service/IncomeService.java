@@ -29,13 +29,16 @@ public class IncomeService {
 
         User user = userRepository.findByEmail(email).orElse(null);
 
+        if (user == null) {
+            return null;
+        }
+
         Income income = new Income();
 
         income.setSource(request.getSource());
         income.setAmount(request.getAmount());
         income.setIncomeDate(request.getIncomeDate());
         income.setNote(request.getNote());
-
         income.setUser(user);
 
         return incomeRepository.save(income);
@@ -50,7 +53,25 @@ public class IncomeService {
 
         User user = userRepository.findByEmail(email).orElse(null);
 
+        if (user == null) {
+            return List.of();
+        }
+
         return incomeRepository.findByUser(user);
+    }
+    public Double getTotalIncome() {
+
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        if (user == null) {
+            return 0.0;
+        }
+
+        return incomeRepository.getTotalIncomeByUser(user);
     }
     public Income updateIncome(Integer id, IncomeRequest request) {
 
@@ -107,4 +128,5 @@ public class IncomeService {
 
         return "Income deleted successfully";
     }
+
 }

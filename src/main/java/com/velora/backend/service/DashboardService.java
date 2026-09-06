@@ -19,12 +19,14 @@ import com.velora.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import com.velora.backend.repository.SubscriptionRepository;
+import com.velora.backend.entity.Subscription;
 import java.util.List;
 
 @Service
 public class DashboardService {
-
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
     @Autowired
     private ExpenseRepository expenseRepository;
 
@@ -45,7 +47,9 @@ public class DashboardService {
             return new DashboardSummaryResponse(
                     0L,
                     0.0,
-                    0.0
+                    0.0,
+                    0.0,
+                    0L
             );
         }
 
@@ -66,10 +70,33 @@ public class DashboardService {
                 .max()
                 .orElse(0.0);
 
+        // Get subscriptions
+        List<Subscription> subscriptions =
+                subscriptionRepository.findByUser(user);
+
+        double monthlySubscriptionAmount = 0.0;
+        long activeSubscriptions = 0;
+
+        for (Subscription subscription : subscriptions) {
+
+            if ("ACTIVE".equalsIgnoreCase(subscription.getStatus())) {
+
+                activeSubscriptions++;
+
+                if ("MONTHLY".equalsIgnoreCase(
+                        subscription.getBillingCycle())) {
+
+                    monthlySubscriptionAmount += subscription.getAmount();
+                }
+            }
+        }
+
         return new DashboardSummaryResponse(
                 totalTransactions,
                 totalExpense,
-                highestExpense
+                highestExpense,
+                monthlySubscriptionAmount,
+                activeSubscriptions
         );
     }
     public List<CategorySummaryResponse> getCategorySummary() {

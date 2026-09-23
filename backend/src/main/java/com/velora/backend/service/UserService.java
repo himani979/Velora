@@ -33,6 +33,11 @@ public class UserService {
 
     public User saveUser(User user) {
 
+        // Check if email is already registered
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Account already exists. Please sign in.");
+        }
+
         user.setPassword(
                 passwordEncoder.encode(user.getPassword())
         );

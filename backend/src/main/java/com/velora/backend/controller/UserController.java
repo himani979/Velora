@@ -33,10 +33,18 @@ public class UserController {
     // =========================
 
     @PostMapping("/register")
-    public User saveUser(
+    public org.springframework.http.ResponseEntity<?> saveUser(
             @Valid @RequestBody User user) {
 
-        return userService.saveUser(user);
+        try {
+            User savedUser = userService.saveUser(user);
+            return org.springframework.http.ResponseEntity.ok(savedUser);
+
+        } catch (RuntimeException e) {
+            return org.springframework.http.ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
 

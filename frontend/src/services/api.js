@@ -81,9 +81,7 @@ export async function registerUser(user) {
     console.log("REGISTER API RESPONSE:", result);
 
     if (!response.ok) {
-        throw new Error(
-            `Registration failed (${response.status}): ${result}`
-        );
+        throw new Error(result || "Registration failed. Please try again.");
     }
 
     return result;

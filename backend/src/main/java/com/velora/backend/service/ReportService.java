@@ -1,19 +1,22 @@
+
 package com.velora.backend.service;
 
 import com.velora.backend.dto.ReportResponse;
+import com.velora.backend.dto.IncomeExpenseReportResponse;
 import com.velora.backend.entity.Expense;
+import com.velora.backend.entity.Income;
 import com.velora.backend.entity.User;
 import com.velora.backend.repository.ExpenseRepository;
+import com.velora.backend.repository.IncomeRepository;
 import com.velora.backend.repository.UserRepository;
+import com.velora.backend.util.CategoryUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import com.velora.backend.dto.IncomeExpenseReportResponse;
-import com.velora.backend.repository.IncomeRepository;
-import com.velora.backend.entity.Income;
-import java.util.*;
 
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class ReportService {
@@ -26,36 +29,65 @@ public class ReportService {
 
     @Autowired
     private IncomeRepository incomeRepository;
-    public List<ReportResponse> getCategoryReport() {
 
-        String email = SecurityContextHolder.getContext()
+
+    // =========================================
+    // GET CURRENT LOGGED-IN USER
+    // =========================================
+
+    private User getCurrentUser() {
+
+        String email = SecurityContextHolder
+                .getContext()
                 .getAuthentication()
                 .getName();
 
-        User user = userRepository.findByEmail(email).orElse(null);
+        return userRepository
+                .findByEmail(email)
+                .orElse(null);
+    }
+
+
+    // =========================================
+    // CATEGORY REPORT
+    // =========================================
+
+    public List<ReportResponse> getCategoryReport() {
+
+        User user = getCurrentUser();
 
         if (user == null) {
             return new ArrayList<>();
         }
 
-        List<Expense> expenses = expenseRepository.findByUser(user);
+        List<Expense> expenses =
+                expenseRepository.findByUser(user);
 
-        Map<String, Double> categoryMap = new HashMap<>();
+        Map<String, Double> categoryMap =
+                new LinkedHashMap<>();
 
         for (Expense expense : expenses) {
 
-            categoryMap.put(
-                    expense.getCategory(),
-                    categoryMap.getOrDefault(
-                            expense.getCategory(),
-                            0.0
-                    ) + expense.getAmount()
+            String category = CategoryUtils.normalize(
+                    expense.getCategory()
+            );
+
+            double amount = expense.getAmount() == null
+                    ? 0
+                    : expense.getAmount();
+
+            categoryMap.merge(
+                    category,
+                    amount,
+                    Double::sum
             );
         }
 
-        List<ReportResponse> response = new ArrayList<>();
+        List<ReportResponse> response =
+                new ArrayList<>();
 
-        for (Map.Entry<String, Double> entry : categoryMap.entrySet()) {
+        for (Map.Entry<String, Double> entry :
+                categoryMap.entrySet()) {
 
             response.add(
                     new ReportResponse(
@@ -67,38 +99,52 @@ public class ReportService {
 
         return response;
     }
+
+
+    // =========================================
+    // MONTHLY EXPENSE REPORT
+    // =========================================
+
     public List<ReportResponse> getMonthlyReport() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return new ArrayList<>();
         }
 
-        List<Expense> expenses = expenseRepository.findByUser(user);
+        List<Expense> expenses =
+                expenseRepository.findByUser(user);
 
-        Map<String, Double> monthlyMap = new HashMap<>();
+        Map<String, Double> monthlyMap =
+                new LinkedHashMap<>();
 
         for (Expense expense : expenses) {
+
+            if (expense.getExpenseDate() == null) {
+                continue;
+            }
 
             String month = expense.getExpenseDate()
                     .getMonth()
                     .toString();
 
-            monthlyMap.put(
+            double amount = expense.getAmount() == null
+                    ? 0
+                    : expense.getAmount();
+
+            monthlyMap.merge(
                     month,
-                    monthlyMap.getOrDefault(month, 0.0)
-                            + expense.getAmount()
+                    amount,
+                    Double::sum
             );
         }
 
-        List<ReportResponse> response = new ArrayList<>();
+        List<ReportResponse> response =
+                new ArrayList<>();
 
-        for (Map.Entry<String, Double> entry : monthlyMap.entrySet()) {
+        for (Map.Entry<String, Double> entry :
+                monthlyMap.entrySet()) {
 
             response.add(
                     new ReportResponse(
@@ -110,14 +156,17 @@ public class ReportService {
 
         return response;
     }
-    public List<ReportResponse> getDateRangeReport(LocalDate startDate,
-                                                   LocalDate endDate) {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
 
-        User user = userRepository.findByEmail(email).orElse(null);
+    // =========================================
+    // DATE RANGE REPORT
+    // =========================================
+
+    public List<ReportResponse> getDateRangeReport(
+            LocalDate startDate,
+            LocalDate endDate) {
+
+        User user = getCurrentUser();
 
         if (user == null) {
             return new ArrayList<>();
@@ -130,35 +179,61 @@ public class ReportService {
                         endDate
                 );
 
-        List<ReportResponse> response = new ArrayList<>();
+        Map<String, Double> categoryMap =
+                new LinkedHashMap<>();
 
         for (Expense expense : expenses) {
 
+            String category = CategoryUtils.normalize(
+                    expense.getCategory()
+            );
+
+            double amount = expense.getAmount() == null
+                    ? 0
+                    : expense.getAmount();
+
+            categoryMap.merge(
+                    category,
+                    amount,
+                    Double::sum
+            );
+        }
+
+        List<ReportResponse> response =
+                new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry :
+                categoryMap.entrySet()) {
+
             response.add(
                     new ReportResponse(
-                            expense.getCategory(),
-                            expense.getAmount()
+                            entry.getKey(),
+                            entry.getValue()
                     )
             );
         }
 
         return response;
     }
+
+
+    // =========================================
+    // INCOME REPORT
+    // =========================================
+
     public List<ReportResponse> getIncomeReport() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return new ArrayList<>();
         }
 
-        List<Income> incomes = incomeRepository.findByUser(user);
+        List<Income> incomes =
+                incomeRepository.findByUser(user);
 
-        List<ReportResponse> response = new ArrayList<>();
+        List<ReportResponse> response =
+                new ArrayList<>();
 
         for (Income income : incomes) {
 
@@ -172,27 +247,43 @@ public class ReportService {
 
         return response;
     }
+
+
+    // =========================================
+    // INCOME VS EXPENSE REPORT
+    // =========================================
+
     public IncomeExpenseReportResponse getIncomeExpenseReport() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
-            return new IncomeExpenseReportResponse(0.0, 0.0, 0.0);
+            return new IncomeExpenseReportResponse(
+                    0.0,
+                    0.0,
+                    0.0
+            );
         }
 
-        double totalIncome = incomeRepository.findByUser(user)
-                .stream()
-                .mapToDouble(Income::getAmount)
-                .sum();
+        double totalIncome =
+                incomeRepository.findByUser(user)
+                        .stream()
+                        .mapToDouble(income ->
+                                income.getAmount() == null
+                                        ? 0
+                                        : income.getAmount()
+                        )
+                        .sum();
 
-        double totalExpense = expenseRepository.findByUser(user)
-                .stream()
-                .mapToDouble(Expense::getAmount)
-                .sum();
+        double totalExpense =
+                expenseRepository.findByUser(user)
+                        .stream()
+                        .mapToDouble(expense ->
+                                expense.getAmount() == null
+                                        ? 0
+                                        : expense.getAmount()
+                        )
+                        .sum();
 
         double savings = totalIncome - totalExpense;
 

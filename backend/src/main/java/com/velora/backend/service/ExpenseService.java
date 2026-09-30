@@ -1,16 +1,22 @@
+
 package com.velora.backend.service;
 
 import com.velora.backend.entity.User;
-import com.velora.backend.repository.UserRepository;
-import com.velora.backend.dto.ExpenseRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import com.velora.backend.entity.Expense;
+import com.velora.backend.repository.UserRepository;
 import com.velora.backend.repository.ExpenseRepository;
+import com.velora.backend.dto.ExpenseRequest;
+import com.velora.backend.dto.CategorySummaryResponse;
+import com.velora.backend.util.CategoryUtils;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
-import com.velora.backend.dto.CategorySummaryResponse;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 @Service
 public class ExpenseService {
@@ -21,15 +27,26 @@ public class ExpenseService {
     @Autowired
     private UserRepository userRepository;
 
+    // =========================
+    // GET CURRENT USER
+    // =========================
 
-
-    public List<Expense> getAllExpenses() {
+    private User getCurrentUser() {
 
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
-        User user = userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    // =========================
+    // GET ALL EXPENSES
+    // =========================
+
+    public List<Expense> getAllExpenses() {
+
+        User user = getCurrentUser();
 
         if (user == null) {
             return List.of();
@@ -38,16 +55,13 @@ public class ExpenseService {
         return expenseRepository.findByUser(user);
     }
 
-
-
+    // =========================
+    // SAVE EXPENSE
+    // =========================
 
     public Expense saveExpense(ExpenseRequest request) {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return null;
@@ -57,71 +71,87 @@ public class ExpenseService {
 
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
-        expense.setCategory(request.getCategory());
+
+        // Standardize category before saving
+        expense.setCategory(
+                CategoryUtils.normalize(request.getCategory())
+        );
+
         expense.setExpenseDate(request.getExpenseDate());
         expense.setNote(request.getNote());
         expense.setUser(user);
 
         return expenseRepository.save(expense);
     }
-    public Expense updateExpense(Integer id, ExpenseRequest request) {
 
-        // Get logged-in user's email from JWT
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+    // =========================
+    // UPDATE EXPENSE
+    // =========================
 
-        // Find logged-in user
-        User user = userRepository.findByEmail(email).orElse(null);
+    public Expense updateExpense(
+            Integer id,
+            ExpenseRequest request) {
+
+        User user = getCurrentUser();
 
         if (user == null) {
             return null;
         }
 
-        // Find expense by ID
-        Expense expense = expenseRepository.findById(id).orElse(null);
+        Expense expense = expenseRepository
+                .findById(id)
+                .orElse(null);
 
         if (expense == null) {
             return null;
         }
 
-        // Check if this expense belongs to the logged-in user
-        if (!expense.getUser().getId().equals(user.getId())) {
+        // Check ownership
+        if (!expense.getUser()
+                .getId()
+                .equals(user.getId())) {
+
             return null;
         }
 
-        // Update fields
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
-        expense.setCategory(request.getCategory());
+
+        // Standardize category before updating
+        expense.setCategory(
+                CategoryUtils.normalize(request.getCategory())
+        );
+
         expense.setExpenseDate(request.getExpenseDate());
         expense.setNote(request.getNote());
 
         return expenseRepository.save(expense);
     }
+
+    // =========================
+    // DELETE EXPENSE
+    // =========================
+
     public String deleteExpense(Integer id) {
 
-        // Get logged-in user's email
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        // Find logged-in user
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return "User not found";
         }
 
-        // Find expense
-        Expense expense = expenseRepository.findById(id).orElse(null);
+        Expense expense = expenseRepository
+                .findById(id)
+                .orElse(null);
 
         if (expense == null) {
             return "Expense not found";
         }
 
-        // Check ownership
-        if (!expense.getUser().getId().equals(user.getId())) {
+        if (!expense.getUser()
+                .getId()
+                .equals(user.getId())) {
+
             return "You cannot delete this expense";
         }
 
@@ -129,136 +159,185 @@ public class ExpenseService {
 
         return "Expense deleted successfully";
     }
+
+    // =========================
+    // CATEGORY SUMMARY
+    // =========================
+
     public List<CategorySummaryResponse> getCategorySummary() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return List.of();
         }
 
-        List<Object[]> results = expenseRepository.getCategorySummary(user);
+        List<Expense> expenses =
+                expenseRepository.findByUser(user);
 
-        return results.stream()
-                .map(result -> new CategorySummaryResponse(
-                        (String) result[0],
-                        ((Number) result[1]).doubleValue()
+        // Combine equivalent categories
+        Map<String, Double> categoryTotals =
+                new LinkedHashMap<>();
+
+        for (Expense expense : expenses) {
+
+            String category = CategoryUtils.normalize(
+                    expense.getCategory()
+            );
+
+            double amount = expense.getAmount() == null
+                    ? 0
+                    : expense.getAmount();
+
+            categoryTotals.merge(
+                    category,
+                    amount,
+                    Double::sum
+            );
+        }
+
+        return categoryTotals.entrySet()
+                .stream()
+                .map(entry -> new CategorySummaryResponse(
+                        entry.getKey(),
+                        entry.getValue()
                 ))
                 .toList();
     }
+
+    // =========================
+    // GET EXPENSE BY ID
+    // =========================
+
     public Expense getExpenseById(Integer id) {
 
-        // Logged-in user's email
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        // Find logged-in user
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return null;
         }
 
-        // Find expense
-        Expense expense = expenseRepository.findById(id).orElse(null);
+        Expense expense = expenseRepository
+                .findById(id)
+                .orElse(null);
 
         if (expense == null) {
             return null;
         }
 
-        // Check ownership
-        if (!expense.getUser().getId().equals(user.getId())) {
+        if (!expense.getUser()
+                .getId()
+                .equals(user.getId())) {
+
             return null;
         }
 
         return expense;
     }
+
+    // =========================
+    // SEARCH BY TITLE
+    // =========================
+
     public List<Expense> searchExpenseByTitle(String title) {
 
-        // Logged-in user's email
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        // Find logged-in user
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return List.of();
         }
 
-        return expenseRepository.findByUserAndTitleContainingIgnoreCase(user, title);
+        return expenseRepository
+                .findByUserAndTitleContainingIgnoreCase(
+                        user,
+                        title
+                );
     }
+
+    // =========================
+    // GET EXPENSES BY CATEGORY
+    // =========================
+
     public List<Expense> getExpensesByCategory(String category) {
 
-        // Logged-in user's email
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        // Find logged-in user
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return List.of();
         }
 
-        return expenseRepository.findByUserAndCategoryIgnoreCase(user, category);
+        return expenseRepository.findByUser(user)
+                .stream()
+                .filter(expense ->
+                        CategoryUtils.isSame(
+                                expense.getCategory(),
+                                category
+                        )
+                )
+                .toList();
     }
-    public List<Expense> getExpensesByDateRange(LocalDate start, LocalDate end) {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+    // =========================
+    // GET EXPENSES BY DATE RANGE
+    // =========================
 
-        User user = userRepository.findByEmail(email).orElse(null);
+    public List<Expense> getExpensesByDateRange(
+            LocalDate start,
+            LocalDate end) {
+
+        User user = getCurrentUser();
 
         if (user == null) {
             return List.of();
         }
 
-        return expenseRepository.findByUserAndExpenseDateBetween(user, start, end);
+        return expenseRepository
+                .findByUserAndExpenseDateBetween(
+                        user,
+                        start,
+                        end
+                );
     }
+
+    // =========================
+    // TOTAL EXPENSE
+    // =========================
+
     public Double getTotalExpense() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return 0.0;
         }
 
-        return expenseRepository.getTotalExpenseByUser(user);
+        return expenseRepository
+                .getTotalExpenseByUser(user);
     }
+
+    // =========================
+    // HIGHEST EXPENSE
+    // =========================
+
     public Expense getHighestExpense() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return null;
         }
 
-        return expenseRepository.findTopByUserOrderByAmountDesc(user);
+        return expenseRepository
+                .findTopByUserOrderByAmountDesc(user);
     }
+
+    // =========================
+    // MONTHLY EXPENSE
+    // =========================
+
     public Double getMonthlyExpense() {
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = getCurrentUser();
 
         if (user == null) {
             return 0.0;
@@ -272,5 +351,4 @@ public class ExpenseService {
                 today.getYear()
         );
     }
-
 }

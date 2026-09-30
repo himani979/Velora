@@ -1,3 +1,4 @@
+
 package com.velora.backend.service;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import com.velora.backend.entity.User;
 import com.velora.backend.repository.BudgetRepository;
 import com.velora.backend.repository.ExpenseRepository;
 import com.velora.backend.repository.UserRepository;
-import java.util.Optional;
+import com.velora.backend.util.CategoryUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +32,9 @@ public class BudgetService {
     private ExpenseRepository expenseRepository;
 
 
-    // =====================================================
+    // =========================================
     // GET CURRENT LOGGED-IN USER
-    // =====================================================
+    // =========================================
 
     private User getCurrentUser() {
 
@@ -48,9 +49,9 @@ public class BudgetService {
     }
 
 
-    // =====================================================
+    // =========================================
     // SAVE BUDGET
-    // =====================================================
+    // =========================================
 
     public Budget saveBudget(BudgetRequest request) {
 
@@ -60,23 +61,32 @@ public class BudgetService {
             return null;
         }
 
-        // Check if same category budget already exists
-        Optional<Budget> existingBudget =
-                budgetRepository.findByUserAndCategoryIgnoreCaseAndMonthAndYear(
+        String category = CategoryUtils.normalize(
+                request.getCategory()
+        );
+
+        // Check duplicate budgets, including old category names
+        boolean budgetExists = budgetRepository
+                .findByUserAndMonthAndYear(
                         user,
-                        request.getCategory(),
                         request.getMonth(),
                         request.getYear()
+                )
+                .stream()
+                .anyMatch(existing ->
+                        CategoryUtils.isSame(
+                                existing.getCategory(),
+                                category
+                        )
                 );
 
-        // If already exists, don't create duplicate
-        if (existingBudget.isPresent()) {
+        if (budgetExists) {
             return null;
         }
 
         Budget budget = new Budget();
 
-        budget.setCategory(request.getCategory());
+        budget.setCategory(category);
         budget.setAmount(request.getAmount());
         budget.setMonth(request.getMonth());
         budget.setYear(request.getYear());
@@ -85,9 +95,10 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 
-    // =====================================================
+
+    // =========================================
     // GET ALL BUDGETS
-    // =====================================================
+    // =========================================
 
     public List<Budget> getAllBudgets() {
 
@@ -101,9 +112,9 @@ public class BudgetService {
     }
 
 
-    // =====================================================
+    // =========================================
     // GET BUDGETS FOR SELECTED MONTH
-    // =====================================================
+    // =========================================
 
     public List<BudgetResponse> getAllBudgetResponses(
             int month,
@@ -134,9 +145,9 @@ public class BudgetService {
     }
 
 
-    // =====================================================
+    // =========================================
     // CREATE BUDGET RESPONSE
-    // =====================================================
+    // =========================================
 
     private BudgetResponse createBudgetResponse(
             Budget budget,
@@ -145,21 +156,12 @@ public class BudgetService {
 
         User user = budget.getUser();
 
-        // Selected month
-        YearMonth yearMonth =
-                YearMonth.of(year, month);
+        YearMonth yearMonth = YearMonth.of(year, month);
 
-        LocalDate startDate =
-                yearMonth.atDay(1);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
 
-        LocalDate endDate =
-                yearMonth.atEndOfMonth();
-
-
-        // =================================================
-        // GET EXPENSES OF SELECTED MONTH
-        // =================================================
-
+        // Get expenses for selected month
         List<Expense> expenses =
                 expenseRepository.findByUserAndExpenseDateBetween(
                         user,
@@ -167,81 +169,40 @@ public class BudgetService {
                         endDate
                 );
 
-
-        // =================================================
-        // CALCULATE SPENT FOR THIS CATEGORY
-        // =================================================
-
+        // Calculate spending using normalized categories
         double spent = expenses.stream()
                 .filter(expense ->
-                        expense.getCategory() != null
-                                &&
-                                expense.getCategory()
-                                        .equalsIgnoreCase(
-                                                budget.getCategory()
-                                        )
+                        CategoryUtils.isSame(
+                                expense.getCategory(),
+                                budget.getCategory()
+                        )
                 )
-                .mapToDouble(expense -> {
-
-                    if (expense.getAmount() == null) {
-                        return 0;
-                    }
-
-                    return expense.getAmount();
-                })
+                .mapToDouble(expense ->
+                        expense.getAmount() == null
+                                ? 0
+                                : expense.getAmount()
+                )
                 .sum();
-
-
-        // =================================================
-        // BUDGET AMOUNT
-        // =================================================
 
         double budgetAmount =
                 budget.getAmount() == null
                         ? 0
                         : budget.getAmount();
 
-
-        // =================================================
-        // REMAINING
-        // =================================================
-
-        double remaining =
-                budgetAmount - spent;
-
-
-        // =================================================
-        // PROGRESS
-        // =================================================
+        double remaining = budgetAmount - spent;
 
         double progress = 0;
 
         if (budgetAmount > 0) {
-
-            progress =
-                    (spent / budgetAmount) * 100;
+            progress = (spent / budgetAmount) * 100;
         }
 
-
-        // Never show progress above 100%
-        if (progress > 100) {
-            progress = 100;
-        }
-
-
-        // Never show negative progress
-        if (progress < 0) {
-            progress = 0;
-        }
-
-
-        // =================================================
-        // RESPONSE
-        // =================================================
+        // Keep progress between 0 and 100
+        progress = Math.max(0, Math.min(progress, 100));
 
         return new BudgetResponse(
                 budget.getId(),
-                budget.getCategory(),
+                CategoryUtils.normalize(budget.getCategory()),
                 budget.getAmount(),
                 budget.getCreatedAt(),
                 spent,
@@ -251,9 +212,9 @@ public class BudgetService {
     }
 
 
-    // =====================================================
+    // =========================================
     // UPDATE BUDGET
-    // =====================================================
+    // =========================================
 
     public Budget updateBudget(
             Integer id,
@@ -265,10 +226,9 @@ public class BudgetService {
             return null;
         }
 
-        Budget budget =
-                budgetRepository
-                        .findById(id)
-                        .orElse(null);
+        Budget budget = budgetRepository
+                .findById(id)
+                .orElse(null);
 
         if (budget == null) {
             return null;
@@ -282,32 +242,44 @@ public class BudgetService {
             return null;
         }
 
-        // Update budget details
-        budget.setCategory(
+        String category = CategoryUtils.normalize(
                 request.getCategory()
         );
 
-        budget.setAmount(
-                request.getAmount()
-        );
+        // Check if another budget already uses this category
+        // in the requested month and year
+        boolean duplicateExists = budgetRepository
+                .findByUserAndMonthAndYear(
+                        user,
+                        request.getMonth(),
+                        request.getYear()
+                )
+                .stream()
+                .anyMatch(existing ->
+                        !existing.getId().equals(budget.getId())
+                                &&
+                                CategoryUtils.isSame(
+                                        existing.getCategory(),
+                                        category
+                                )
+                );
 
-        // IMPORTANT:
-        // Update month and year also
-        budget.setMonth(
-                request.getMonth()
-        );
+        if (duplicateExists) {
+            return null;
+        }
 
-        budget.setYear(
-                request.getYear()
-        );
+        budget.setCategory(category);
+        budget.setAmount(request.getAmount());
+        budget.setMonth(request.getMonth());
+        budget.setYear(request.getYear());
 
         return budgetRepository.save(budget);
     }
 
 
-    // =====================================================
+    // =========================================
     // DELETE BUDGET
-    // =====================================================
+    // =========================================
 
     public String deleteBudget(Integer id) {
 
@@ -317,26 +289,21 @@ public class BudgetService {
             return "User not found";
         }
 
-
-        Budget budget =
-                budgetRepository
-                        .findById(id)
-                        .orElse(null);
+        Budget budget = budgetRepository
+                .findById(id)
+                .orElse(null);
 
         if (budget == null) {
             return "Budget not found";
         }
 
-
-        // Budget must belong to logged-in user
-
+        // Check ownership
         if (!budget.getUser()
                 .getId()
                 .equals(user.getId())) {
 
             return "You cannot delete this budget";
         }
-
 
         budgetRepository.delete(budget);
 

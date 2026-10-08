@@ -39,7 +39,7 @@ public class GeminiService {
 
 
     public GeminiService(
-            @Value("${gemini.api.key}") String apiKey) {
+            @Value("${GEMINI_API_KEY}") String apiKey) {
 
         this.client = Client.builder()
                 .apiKey(apiKey)

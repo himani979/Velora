@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "./Subscriptions.css";
-import { useEffect, useState } from "react";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "https://velora-backend-x8ec.onrender.com";
 
 const subscriptionPlans = {
     Netflix: [

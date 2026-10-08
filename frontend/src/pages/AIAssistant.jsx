@@ -1,6 +1,6 @@
+import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "./AIAssistant.css";
-import { useState } from "react";
 
 
 // ==========================================
@@ -136,7 +136,7 @@ function AIAssistant() {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                "http://localhost:8081/api/ai/ask",
+                "https://velora-backend-x8ec.onrender.com/api/ai/ask",
                 {
                     method: "POST",
 

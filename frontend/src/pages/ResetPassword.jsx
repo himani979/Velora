@@ -31,7 +31,7 @@ function ResetPassword() {
 
         try {
             const response = await fetch(
-                "http://localhost:8081/api/users/reset-password",
+                "https://velora-backend-x8ec.onrender.com/api/users/reset-password",
                 {
                     method: "POST",
                     headers: {

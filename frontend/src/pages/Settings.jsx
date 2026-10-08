@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import "./Settings.css";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "https://velora-backend-x8ec.onrender.com";
 
 function Settings() {
 

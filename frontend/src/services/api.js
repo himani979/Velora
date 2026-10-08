@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "https://velora-backend-x8ec.onrender.com";
 
 function getToken() {
     return localStorage.getItem("token");

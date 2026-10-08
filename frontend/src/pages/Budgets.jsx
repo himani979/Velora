@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "./Budgets.css";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "https://velora-backend-x8ec.onrender.com";
 
 // =====================================================
 // TOKEN
